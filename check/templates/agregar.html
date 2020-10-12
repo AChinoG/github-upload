@@ -28,7 +28,7 @@ PAGINA DE NOTAS {{title}}
   <div class="box">
 
     <h1 class="titulo" align="center"> NUEVA NOTA DE {{ user.username | upper }} </h1>
-
+    <hr>
     <form method="POST">
         {{ form.as_p }}
         {% csrf_token %}
