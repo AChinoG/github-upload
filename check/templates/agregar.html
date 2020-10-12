@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block title %}
+PAGINA DE NOTAS {{title}}
+{% endblock %}
+
+
+
+{% block menu %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+<nav class="nav">
+  <a class="nav-link" href="{% url 'inicio' %}">INICIO</a>
+  <a class="nav-link" href="{% url 'agregar' %}">AGREGAR</a>
+  <a class="nav-link" href="{% url 'salir' %}">SALIR</a>
+</nav>
+{% endblock  %}
+
+{% block content %}
+</br>
+</br>
+</br>
+
+<div id="content">
+  <div class="box">
+
+    <h1 class="titulo"> NUEVA NOTA DE {{ user.username | upper }} </h1>
+
+    <form method="POST">
+        {{ form.as_p }}
+        {% csrf_token %}
+     
+        <button type="submit">GUARDAR</button>
+    </form>
+  </div>
+</div>
+
+{% endblock  %}

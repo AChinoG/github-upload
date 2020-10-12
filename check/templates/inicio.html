@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block title %}
+PAGINA DE NOTAS {{title}}
+{% endblock %}
+
+
+
+{% block menu %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+<nav class="nav justify-content-center">
+  <a class="nav-link" href="{% url 'inicio' %}">INICIO</a>
+  <a class="nav-link" href="{% url 'agregar' %}">AGREGAR</a>
+  <a class="nav-link" href="{% url 'salir' %}">SALIR</a>
+</nav>
+{% endblock  %}
+
+{% block content %}
+<div id="content">
+  <div class="box">
+    <br>
+    <br>
+    {% if user.is_authenticated %}
+    <h1 class="titulo"> NOTAS DE {{ user.get_username | upper }} </h1>
+    {% endif %}
+    <h2 class="lista"> LISTA DE NOTAS </h2>
+    <hr>
+    <ul>
+
+    {% for nota in notas %}
+
+        <li>
+    
+          <h3> {{nota.titulo}} </h3>
+        
+          <h4> AUTOR: {{nota.autor}} </h4>
+          <p>
+            {{ nota.descrpcion }}
+            </br>
+            <a href="{% url 'eliminar' id=nota.id %}">Eliminar</a>
+            <a href="{% url 'editar' id=nota.id %}">Editar</a>
+          </p>
+        <hr>
+        <br>
+        
+        </li>
+      
+    {% endfor %}
+    
+    </ul>
+  </div>
+</div>
+
+{% endblock  %}
