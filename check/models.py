@@ -15,8 +15,15 @@ class No_usar(models.Model):
     #REQUIRED_FIELDS = ['username']
 
 
+class Categoria(models.Model):
+    clasificacion = models.CharField(max_length=50)
+    def __str__(self):
+        return self.clasificacion
+    
+
 class Notas(models.Model):
     autor = models.CharField(max_length=50)
+    tipo = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True)
     titulo = models.CharField(max_length=50)
     descrpcion = models.TextField(max_length=300)
     fecha = models.DateTimeField()

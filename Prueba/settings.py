@@ -120,6 +120,8 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = reverse_lazy('inicio')
 
+#LOGOUT_REDIRECT_URL = 'accounts/login/'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

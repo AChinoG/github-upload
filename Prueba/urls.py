@@ -21,10 +21,10 @@ import check.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', auth_views.LoginView.as_view(template_name='index.html'), name="index"),
-    path('inicio/', check.views.notas, name="inicio"),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='index.html'), name="index"),
+    path('', check.views.notas, name="inicio"),
     path('agregar/', check.views.add, name="agregar"),
     path('eliminar/<int:id>/', check.views.eliminar, name="eliminar"),
     path('editar/<int:id>/', check.views.editar, name="editar"),
-    path('', check.views.logout_sesion, name="salir")
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='index'), name="salir")
 ]

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 # Create your views here.
-
+@login_required
 def notas(request):
     if request.user.is_authenticated:
         nombre = request.user.id
@@ -18,6 +18,7 @@ def notas(request):
         }
         return render(request, 'inicio.html', ctx)
 
+@login_required
 def eliminar(request, id):
     nota = Notas.objects.get(id=id)
     nota.delete()
@@ -48,6 +49,7 @@ def logout_sesion(request):
     logout(request)
     return render(request, 'index.html')
 
+@login_required
 def editar(request, id):
     edit = Notas.objects.get(id=id)
     form = Edit(instance=edit)

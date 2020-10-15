@@ -23,7 +23,7 @@ PAGINA DE NOTAS {{title}}
 <div id="content">
   <div class="box">
     <br>
-    <br>
+  
     {% if user.is_authenticated %}
     <h1 class="titulo" align="center"> NOTAS DE {{ user.get_username | upper }} </h1>
     {% endif %}
@@ -36,6 +36,7 @@ PAGINA DE NOTAS {{title}}
         <li>
     
           <h3> {{nota.titulo}} </h3>
+          <h4> CATEGORIA: {{nota.tipo }} </h4>
         
           <h4> AUTOR: {{nota.autor}} </h4>
           <p>
