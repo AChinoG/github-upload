@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirect
 from check.models import Notas
-from .formularios import AddNota, Edit
+from .formularios import AddNota, Edit, Filtro
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 from django.contrib import admin
@@ -8,15 +8,43 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 # Create your views here.
+
+def buscar(request):
+    nombre = request.user.id
+    form = Filtro()
+    if request.method == 'POST':
+        form = Filtro(data=request.POST)
+        if form.is_valid():
+            cat = form.save(commit=False)
+            vacio = ""
+            if cat == vacio:
+                notas = Notas.objects.filter(usuario=nombre) 
+                ctx = {
+                    'notas': notas,
+                }
+                return render(request, 'inicio.html', ctx)
+            else:
+                notas = Notas.objects.filter(usuario=nombre, tipo=cat) 
+                ctx = {
+                    'notas': notas,
+                }
+                return render(request, 'inicio.html', ctx)
+
+    return render(request, 'inicio.html', {'form':form})
+
 @login_required
 def notas(request):
+    
     if request.user.is_authenticated:
         nombre = request.user.id
+       
         notas = Notas.objects.filter(usuario=nombre) 
         ctx = {
             'notas': notas,
-        }
-        return render(request, 'inicio.html', ctx)
+            }
+    
+    return render(request, 'inicio.html', ctx)
+
 
 @login_required
 def eliminar(request, id):
@@ -39,8 +67,9 @@ def add(request):
                 fecha = timezone.now(),
                 usuario = request.user
             )
-            
+            nota.tipo.set(form.cleaned_data['tipo'])
             nota.save()
+            
             return redirect('inicio')
 
     return render(request, 'agregar.html', {'form':form})
@@ -60,9 +89,10 @@ def editar(request, id):
             
             edit.autor = form.cleaned_data['autor']
             edit.titulo = form.cleaned_data['titulo']
+            
             edit.descrpcion = form.cleaned_data['descrpcion']
             edit.fecha = timezone.now()
-
+            edit.tipo.set(form.cleaned_data['tipo'])
             edit.save()
             return redirect('inicio')
 

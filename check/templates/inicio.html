@@ -23,12 +23,22 @@ PAGINA DE NOTAS {{title}}
 <div id="content">
   <div class="box">
     <br>
-  
     {% if user.is_authenticated %}
     <h1 class="titulo" align="center"> NOTAS DE {{ user.get_username | upper }} </h1>
     {% endif %}
     <h2 class="lista" align="center"> LISTA DE NOTAS </h2>
+
     <hr>
+
+    <form method="POST">
+        {{ form.as_p }}
+        {% csrf_token %}
+     
+        <button type="submit">BUSCAR</button>
+    </form>
+
+    <hr>
+
     <ul>
 
     {% for nota in notas %}
@@ -36,8 +46,15 @@ PAGINA DE NOTAS {{title}}
         <li>
     
           <h3> {{nota.titulo}} </h3>
-          <h4> CATEGORIA: {{nota.tipo }} </h4>
-        
+
+          <h3> CATEGORIA: </h3>
+
+          {% for cat in nota.tipo.all %}
+
+            <h4> {{ cat.clasificacion}} </h4>
+
+          {% endfor %}
+          
           <h4> AUTOR: {{nota.autor}} </h4>
           <p>
             {{ nota.descrpcion }}
@@ -45,14 +62,15 @@ PAGINA DE NOTAS {{title}}
             <a href="{% url 'eliminar' id=nota.id %}">Eliminar</a>
             <a href="{% url 'editar' id=nota.id %}">Editar</a>
           </p>
-        <hr>
+        
         <br>
         
         </li>
-      
+      <hr>
     {% endfor %}
     
     </ul>
+    
   </div>
 </div>
 

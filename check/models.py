@@ -16,17 +16,35 @@ class No_usar(models.Model):
 
 
 class Categoria(models.Model):
-    clasificacion = models.CharField(max_length=50)
+    clasificacion = models.CharField(max_length=50, null=True)
     def __str__(self):
         return self.clasificacion
     
 
 class Notas(models.Model):
     autor = models.CharField(max_length=50)
-    tipo = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True)
+    tipo = models.ManyToManyField(Categoria, through='CategoriaNota')
     titulo = models.CharField(max_length=50)
     descrpcion = models.TextField(max_length=300)
     fecha = models.DateTimeField()
     usuario = models.ForeignKey(User, models.SET_NULL, null=True, blank=True)
 
 
+class CategoriaNota(models.Model):
+
+    order_with_respect_to = 'Notas'
+
+    unique_togeher = [
+        ('Notas', 'Categoria'),
+    ]
+
+    clasificacion_choices = [
+        (6, 'ORGANIZACION'),
+        (11, 'TAREA'),
+        (10, 'RECORDATORIO'),
+        (9, 'IMPORTANTE'),
+        (7, 'URGENTE'),
+    ]
+
+    nota = models.ForeignKey(Notas, models.CASCADE)
+    clasificacion = models.ForeignKey(Categoria, models.CASCADE)
